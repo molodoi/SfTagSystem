@@ -1,0 +1,9 @@
+services:
+  tag.form.type.tags:
+    class: Ticme\TagBundle\Form\Type\TagType
+    arguments: ['@doctrine.orm.entity_manager']
+    tags:
+      - { name: form.type }
+#    tag.example:
+#        class: Ticme\TagBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

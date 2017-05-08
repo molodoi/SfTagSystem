@@ -1,0 +1,3 @@
+tag_homepage:
+    path:     /
+    defaults: { _controller: TagBundle:Default:index }
