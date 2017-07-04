@@ -20,11 +20,17 @@ class PostController extends Controller
      * @Route("/", name="post_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $posts = $em->getRepository('AppBundle:Post')->findAll();
+        $repository = $em->getRepository('AppBundle:Post');
+
+        if($tag = $request->query->get('tag')){
+            $posts = $repository->findByTag($tag);
+        }else{
+            $posts = $repository->findLatest();
+        }
 
         return $this->render('post/index.html.twig', array(
             'posts' => $posts,
