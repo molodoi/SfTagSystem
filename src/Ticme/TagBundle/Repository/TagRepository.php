@@ -10,4 +10,24 @@ namespace Ticme\TagBundle\Repository;
  */
 class TagRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function search (string $q): array {
+        return $this->createQueryBuilder('t')
+            ->where('t.title LIKE :search')
+            ->setParameter('search', "%".$q."%")
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findUnusedTags ($class){
+        $em = $this->getEntityManager();
+        $rsm = new ResultSetMappingBuilder($em);
+        $rsm->addRootEntityFromClassMetadata(Tag::class, 't');
+        $join_table = $em->getClassMetadata($class)->getAssociationMapping('tags')['joinTable']['title'];
+        return $em->createNativeQuery('
+            SELECT t.id, t.title
+            FROM tag t 
+            LEFT JOIN post_tag ON post_tag.tag_id = t.id
+            WHERE post_tag.tag_id IS NULL
+        ', $rsm )->getResult();
+    }
 }

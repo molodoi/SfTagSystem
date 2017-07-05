@@ -3,6 +3,7 @@
 namespace Ticme\TagBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Tag
@@ -55,7 +56,7 @@ class Tag
 
     /**
      * Get title
-     *
+     * @Groups({"public"})
      * @return string
      */
     public function getTitle()
